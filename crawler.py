@@ -5,7 +5,11 @@ from html.parser import HTMLParser
 
 
 unVisitUrl = []
-visitidUrl = []
+visitUrl = []
+
+
+
+
 
 class MyHTMLParser(HTMLParser):
 
@@ -16,14 +20,32 @@ class MyHTMLParser(HTMLParser):
 					# print(name, '=', value)
 					unVisitUrl.append(value)
 
-# Thread handle.
-http = urllib3.PoolManager()
 
-# Get request for the initial page.
-r = http.request('GET', 'https://www.google.com')
-# Converting html page bytes for str
-data = r.data.decode('latin-1')
 
-parser = MyHTMLParser()
+class Collector():
 
-parser.feed(data)
+
+	def __init__(self, initurl, maxurl):
+		# Thread handle.
+		self.http = urllib3.PoolManager()
+		self.parser = MyHTMLParser()
+		self.initurl = initurl
+		self.maxurl = maxurl
+
+
+	def start(self):
+		response = self.http.request('GET', self.initurl)
+
+		visitUrl.append(self.initurl)
+
+		data = response.data.decode('latin-1')
+
+		self.parser.feed(data)
+
+		for i in range(self.maxurl):
+			pass
+
+
+crawler = Collector("https://www.google.com", 3)
+
+crawler.start()	
