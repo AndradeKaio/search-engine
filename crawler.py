@@ -1,6 +1,6 @@
 import urllib3
+#from urllib.parse import urlparse
 from html.parser import HTMLParser
-
 
 
 class MyHTMLParser(HTMLParser):
@@ -9,24 +9,18 @@ class MyHTMLParser(HTMLParser):
 		if tag == "a":
 			for name, value in attrs:
 				if name == "href":
-					print(name, "=", value)
-
-		print("Start tag: ", tag)
-
-	def handle_endtag(self, tag):
-		print("End tag: ", tag)
-
-	def handle_data(self, data):
-		print("Data: ", data)
+					print(name, '=', value)
 
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 http = urllib3.PoolManager()
 
-r = http.request('GET', 'http://google.com')
+r = http.request('GET', 'https://www.google.com')
 
-print(r.data.decode('utf-8'))
+data = r.data.decode('latin-1')
 
 parser = MyHTMLParser()
-parser.feed('<html> teste </html>')
+
+parser.feed(data)
