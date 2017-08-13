@@ -1,7 +1,11 @@
+# Simple Python Crawler.
+
 import urllib3
-#from urllib.parse import urlparse
 from html.parser import HTMLParser
 
+
+unVisitUrl = []
+visitidUrl = []
 
 class MyHTMLParser(HTMLParser):
 
@@ -9,16 +13,15 @@ class MyHTMLParser(HTMLParser):
 		if tag == "a":
 			for name, value in attrs:
 				if name == "href":
-					print(name, '=', value)
+					# print(name, '=', value)
+					unVisitUrl.append(value)
 
-
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
+# Thread handle.
 http = urllib3.PoolManager()
 
+# Get request for the initial page.
 r = http.request('GET', 'https://www.google.com')
-
+# Converting html page bytes for str
 data = r.data.decode('latin-1')
 
 parser = MyHTMLParser()
