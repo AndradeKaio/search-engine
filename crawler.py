@@ -34,17 +34,21 @@ class Collector():
 
 
 	def start(self):
-		response = self.http.request('GET', self.initurl)
-
-		visitUrl.append(self.initurl)
-
-		data = response.data.decode('latin-1')
-
-		self.parser.feed(data)
+		self.get_url(self.initurl)
 
 		for i in range(self.maxurl):
-			pass
+			self.get_url(unVisitUrl.pop(0))
 
+	def get_url(self, url):
+		response = self.http.request('GET', url)
+		visitUrl.append(url)
+		data = response.data.decode('latin-1')
+		self.parser.feed(data)
+
+
+	def print_visit_urls():
+		for url in visitUrl:
+			print(url)
 
 crawler = Collector("https://www.google.com", 3)
 
