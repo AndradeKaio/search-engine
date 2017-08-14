@@ -25,14 +25,15 @@ Give examples
 $ apt-get install python-pip
 ```
 
-2. Instale 
-
-
-And repeat
+2. Instale as dependencias
 
 ```
-until finished
+$ pip install urllib3
 ```
+```
+$ pip install html.parser
+```
+
 
 End with an example of getting some data out of the system or using it for a little demo
 
@@ -42,7 +43,7 @@ Explain how to run the automated tests for this system
 
 ### Break down into end to end tests
 
-Explain what these tests test and why
+Explain what these tests test aand why
 
 ```
 Give an example
