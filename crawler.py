@@ -17,6 +17,8 @@ class MyHTMLParser(HTMLParser):
 		if tag == "a":
 			for name, value in attrs:
 				if name == "href":
+					# Para cada URL encontrada que
+					# nao esteja na lista de nao visitas, insira em nao visitas
 					if value not in unVisitUrl:
 						unVisitUrl.append(value)
 
@@ -28,20 +30,27 @@ class Collector():
 	def __init__(self, initurl, maxurl):
 		# Thread handle.
 		self.http = urllib3.PoolManager()
+		# Inicializa o parser
 		self.parser = MyHTMLParser()
+		# Atributos #
 		self.initurl = initurl
 		self.maxurl = maxurl
 
 
 	def start(self):
-		self.get_url(self.initurl)
-		for i in range(self.maxurl):
-			self.get_url(unVisitUrl.pop(0))
+		# Coleta as urls da url inicial
+		self.get_urls(self.initurl)
 
-	def get_url(self, url):
-		response = self.http.request('GET', url)
+		for i in range(self.maxurl):
+			self.get_urls(unVisitUrl.pop(0))
+
+	def get_urls(self, url):
 		visitUrl.append(url)
+		# Request HTML source
+		response = self.http.request('GET', url)
+		# Decodifica os dados de byte para str
 		data = response.data.decode('latin-1')
+		# Invoca o parser
 		self.parser.feed(data)
 
 
@@ -57,3 +66,6 @@ class Collector():
 crawler = Collector("https://www.google.com", 3)
 
 crawler.start()
+crawler.print_visit_urls()
+print('\n')
+crawler.print_unvisit_urls()
