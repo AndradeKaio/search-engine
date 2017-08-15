@@ -12,11 +12,6 @@ These instructions will get you a copy of the project up and running on your loc
 * [Urllib3](https://urllib3.readthedocs.io/en/latest/) - The HTTP client for Python
 * [html.parser](https://docs.python.org/3/library/html.parser.html) - HTML parser for Python
 
-
-```
-Give examples
-```
-
 ### Installing
 
 1. Instale o gerenciador de pacotes pip
