@@ -22,7 +22,7 @@ Give examples
 1. Instale o gerenciador de pacotes pip
 
 ```
-$ apt-get install python-pip
+$ apt-get install python3-pip
 ```
 
 2. Instale as dependencias
