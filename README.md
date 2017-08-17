@@ -68,7 +68,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Authors
 
-* **Kaio Henrique Andrade Ananias** - *Initial work* - [Github Profile](https://github.com/AndradeKaio)
+* **Kaio Henrique Andrade** *- [Github Profile](https://github.com/AndradeKaio)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
