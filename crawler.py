@@ -37,10 +37,11 @@ class Collector():
 
 	def start(self):
 		# Coleta as urls da url inicial
-		self.get_urls(self.initurl)
+		data = self.get_urls(self.initurl)
+		self.parser.feed(data)
 
 		for i in range(self.maxurl):
-			self.get_urls(unVisitUrl.pop(0))
+			data = self.get_urls(unVisitUrl.pop(0))
 
 	def get_urls(self, url):
 		visitUrl.append(url)
@@ -48,8 +49,32 @@ class Collector():
 		response = self.http.request('GET', url)
 		# Decodifica os dados de byte para str
 		data = response.data.decode('latin-1')
-		# Invoca o parser
-		self.parser.feed(data)
+		return data
+
+
+
+	def robots_resolver(self, url):
+		result = {"Allowed":[], "Desallowed": []}
+
+		data = self.get_urls(url + "/robots.txt")
+
+		user_agent = False
+
+		for line in data.split('\n'):
+			if line.startswith('User-agent'):
+				if line.split(': ')[1] == '*':
+					user_agent = True
+				else:
+					user_agent = False
+			elif user_agent == True:		
+				if line.startswith('Allow'):
+					result['Allowed'].append(line.split(':')[1])
+				elif line.startswith('Disallow'):
+					result['Desallowed'].append(line.split(':')[1])
+
+
+		return result
+
 
 
 	def print_visit_urls(self):
@@ -60,15 +85,18 @@ class Collector():
 		for url in unVisitUrl:
 			print(url)
 
-	def robots_resolver(self, url):
-		response = self.http.request('GET', url + "/robots.txt")
-		return response.data.decode('latin-1')
+
+
+
+
 
 
 
 crawler = Collector("https://www.uol.com.br", 0)
 
-crawler.start()
-crawler.print_visit_urls()
-print('\n')
-crawler.print_unvisit_urls()
+# crawler.start()
+data = crawler.robots_resolver("www.google.com")
+print(data)
+# crawler.print_visit_urls()
+# print('\n')
+# crawler.print_unvisit_urls()
