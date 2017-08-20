@@ -11,7 +11,6 @@ visitUrl = []
 
 
 
-
 class MyHTMLParser(HTMLParser):
 	def handle_starttag(self, tag, attrs):
 		if tag == "a":
@@ -21,7 +20,6 @@ class MyHTMLParser(HTMLParser):
 					# nao esteja na lista de nao visitas, insira em nao visitas
 					if value not in unVisitUrl:
 						unVisitUrl.append(value)
-
 
 
 class Collector():
@@ -62,8 +60,13 @@ class Collector():
 		for url in unVisitUrl:
 			print(url)
 
+	def robots_resolver(self, url):
+		response = self.http.request('GET', url + "/robots.txt")
+		return response.data.decode('latin-1')
 
-crawler = Collector("https://www.google.com", 3)
+
+
+crawler = Collector("https://www.uol.com.br", 0)
 
 crawler.start()
 crawler.print_visit_urls()
