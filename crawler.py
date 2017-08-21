@@ -25,19 +25,26 @@ class MyHTMLParser(HTMLParser):
 class Collector():
 
 
-	def __init__(self, initurl, maxurl):
+	def __init__(self, seedfile, maxurl):
 		# Thread handle.
 		self.http = urllib3.PoolManager()
 		# Inicializa o parser
 		self.parser = MyHTMLParser()
 		# Atributos #
-		self.initurl = initurl
+		self.seedfile = seedfile
 		self.maxurl = maxurl
 
 
 	def start(self):
-		# Coleta as urls da url inicial
-		data = self.get_urls(self.initurl)
+		# Abri o arquivo de sementes
+		with open(self.seedfile) as file:
+			seed = file.read()
+
+		# Inicialmente coleta a primeira url do arquivo
+		# E coleta a pagina.
+		data = self.get_urls(seed.split('\n')[0])
+
+		# Alimenta o parser com a url coletada
 		self.parser.feed(data)
 
 		for i in range(self.maxurl):
@@ -68,13 +75,14 @@ class Collector():
 					user_agent = False
 			elif user_agent == True:		
 				if line.startswith('Allow'):
-					result['Allowed'].append(line.split(':')[1])
+					result['Allowed'].append(line.split(': ')[1])
 				elif line.startswith('Disallow'):
-					result['Desallowed'].append(line.split(':')[1])
+					result['Desallowed'].append(line.split(': ')[1])
 
 
 		return result
 
+		
 
 
 	def print_visit_urls(self):
@@ -92,11 +100,11 @@ class Collector():
 
 
 
-crawler = Collector("https://www.uol.com.br", 0)
+crawler = Collector("seed.txt", 0)
 
-# crawler.start()
-data = crawler.robots_resolver("www.google.com")
-print(data)
+crawler.start()
+# data = crawler.robots_resolver("www.google.com")
+# print(data)
 # crawler.print_visit_urls()
 # print('\n')
 # crawler.print_unvisit_urls()
