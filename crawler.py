@@ -1,6 +1,8 @@
 # Simple Python Crawler.
 # Dependencias
 import urllib3
+import graph
+
 from html.parser import HTMLParser
 
 
@@ -33,6 +35,8 @@ class Collector():
 		# Atributos #
 		self.seedfile = seedfile
 		self.maxurl = maxurl
+
+		self.webGraph = webGraph()
 
 
 	def start(self):
