@@ -1,4 +1,4 @@
-import urllib3
+import urllib
 
 
 
@@ -7,13 +7,13 @@ class Fetcher:
 
 	def __init__(self):
 		# Thread handle.
-		self.http = urllib3.PoolManager()
+		# self.http = urllib3.PoolManager()
 		unVisitUrl = []
 		visitUrl = []
 
 	def start(self, file):
 		with open(file) as f:
-			seeds = f.read():
+			seeds = f.read()
 
 		# Dispara Threads para coleta distribuida
 		seed = seeds.split('\n')[0]
@@ -31,11 +31,9 @@ class Fetcher:
 	def get_page(url):
 		visitUrl.append(url)
 		# Coleta web page
-		response = self.http.request('GET', url)
-		# Decodifica os dados de byte para str
-		page = response.data.decode('latin-1')
-		# Retorna pagina web decodificada
-		return page
+		response = urllib.request.urlopen(url)
+		data = response.decode('utf-8')
+		return data
 
 
 
