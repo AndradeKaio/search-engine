@@ -10,8 +10,13 @@ class Fetcher:
 		self.visitUrl = []
 
 	def start(self, file):
-		with open(file) as f:
-			seeds = f.read()
+		
+		try:
+			with open(file) as f:
+				seeds = f.read()
+		except (OSError, IOError) as e:
+			print(e)
+
 		f.close()
 		# Dispara Threads para coleta distribuida
 		self.unVisitUrl.append(seeds.split('\n')[0])
@@ -28,7 +33,12 @@ class Fetcher:
 	def get_page(self, url):
 		self.visitUrl.append(url)
 		# Coleta web page
-		response = urllib.request.urlopen(url)
+
+		try:
+			response = urllib.request.urlopen(url)
+		except request.exceptions.Request.Exception as e:
+			print(e)
+
 		data = response.read()
 		return data.decode('latin-1')
 
