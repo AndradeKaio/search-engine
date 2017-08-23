@@ -1,23 +1,4 @@
 import urllib.request
-from html.parser import HTMLParser
-
-class MyHTMLParser(HTMLParser):
-	url = None
-	def handle_starttag(self, tag, attrs):
-		if tag == "a":
-			for name, value in attrs:
-				if name == "href":
-					return value
-					# Para cada URL encontrada que
-					# nao esteja na lista de nao visitas, insira em nao visitas
-					# if value not in unVisitUrl:
-					# 	unVisitUrl.append(value)
-
-	def handle_endtag(self, tag):
-		if tag == 'a':
-			print('finded')
-			return self.url
-
 
 
 class Fetcher:
@@ -31,18 +12,17 @@ class Fetcher:
 	def start(self, file):
 		with open(file) as f:
 			seeds = f.read()
-
+		f.close()
 		# Dispara Threads para coleta distribuida
-		seed = seeds.split('\n')[0]
+		self.unVisitUrl.append(seeds.split('\n')[0])
 
 		'''
 		for seed in seeds.split('\n'):
 			dispara thread get_page(seed)
 
 		'''
-		self.unVisitUrl.append(seed)
 
-		page = self.get_page(seed)
+		page = self.get_page(self.unVisitUrl.pop(0))
 
 
 	def get_page(self, url):
@@ -77,10 +57,9 @@ class Fetcher:
 		return result
 
 
-# fetcher = Fetcher()
+fetcher = Fetcher()
 
-# fetcher.start('seed.txt')
+fetcher.start('seed.txt')
 
-parser = MyHTMLParser()
-url = parser.feed('<html> <a href="kaio.com"> </a> </html>')
-print(url)
+# parser = MyHTMLParser()
+# parser.feed('<html> <a href="kaio.com"> </a> </html>')

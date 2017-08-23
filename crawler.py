@@ -36,7 +36,7 @@ class Collector():
 		self.seedfile = seedfile
 		self.maxurl = maxurl
 
-		self.webGraph = webGraph()
+		self.webGraph = graph.WebGraph()
 
 
 	def start(self):
