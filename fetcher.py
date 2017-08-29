@@ -74,7 +74,7 @@ class Fetcher:
 			print(url)
 
 	def print_unvisit_urls(self):
-		for url in self.unVisitUrl:
+		for url in selfun.VisitUrl:
 			print(url)
 
 
