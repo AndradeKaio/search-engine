@@ -10,7 +10,7 @@ class Fetcher:
 		self.visitUrl = []
 
 	def start(self, file):
-		
+
 		try:
 			with open(file) as f:
 				seeds = f.read()
@@ -65,6 +65,17 @@ class Fetcher:
 
 
 		return result
+
+
+
+
+	def print_visit_urls(self):
+		for url in self.visitUrl:
+			print(url)
+
+	def print_unvisit_urls(self):
+		for url in self.unVisitUrl:
+			print(url)
 
 
 fetcher = Fetcher()
