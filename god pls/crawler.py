@@ -53,13 +53,16 @@ class Crawler:
             #atualiza os arquivos de visitados e nao visitados
             Crawler.update_files()
 
+    # obtem os links da @page_url atraves do parse.
     @staticmethod
     def get_links(page_url):
         try:
+            #requisicao http
             response = urlopen(page_url)
+            #descarta qualquer arquivo diferente de html
             if 'text/html' in response.getheader('Content-Type'):
                 data = response.read().decode('latin-1')
-
+            #invoca o parser
             parser = Parser(Crawler.base_url, page_url)
             parser.feed(data)
         except:
