@@ -15,6 +15,7 @@ class Parser(HTMLParser):
         if tag == "a":
             for name, value in attrs:
                 if name == "href":
+                    print(value)
                     url = parse.urljoin(self.base_url, value)
                     self.links.add(url)
 

@@ -15,8 +15,8 @@ class MyHTMLParser(HTMLParser):
 				if name == "href":
 					# Para cada URL encontrada que
 					# nao esteja na lista de nao visitas, insira em nao visitas
-					if value not in self.urls:
-						self.urls.append(value)
+					if value not in fetcher.visitUrl:
+						fetcher.unVisitUrl.append(value)
 
 						
 
@@ -36,8 +36,6 @@ class MyHTMLParser(HTMLParser):
 class Fetcher:
 
 	def __init__(self):
-		# Thread handle.
-		# self.http = urllib3.PoolManager()
 		self.unVisitUrl = []
 		self.visitUrl = []
 		self.parser = MyHTMLParser() 
@@ -49,22 +47,23 @@ class Fetcher:
 			with open(file) as f:
 				seeds = f.read()
 		except (OSError, IOError) as e:
-			print(e)
+			print("Erro ao abrir arquivo de seeds")
 
 		f.close()
 		# Dispara Threads para coleta distribuida
-		self.unVisitUrl.append(seeds.split('\n')[0])
+		for url in seeds.split('\n'):
+			self.unVisitUrl.append(url)
 
-		'''
-		for seed in seeds.split('\n'):
-			dispara thread get_page(seed)
-
-		'''
 
 		page = self.get_page(self.unVisitUrl.pop(0))
 		self.parser.feed(page)
+		print(self.unVisitUrl)
+		print(len(self.unVisitUrl))
 
 
+
+	# Realiza a requisicao http da pagina.
+	# Retorna o html da pagina.
 	def get_page(self, url):
 		self.visitUrl.append(url)
 		# Coleta web page

@@ -4,7 +4,7 @@ from general import *
 
 class Crawler:
 
-    project_name = ''
+    directory = ''
     base_url = ''
     domain_name = ''
 
@@ -14,58 +14,68 @@ class Crawler:
     un_visit = set()
     visit = set()
     
-    def __init__(self, project_name, base_url, domain_name):
-        Crawler.project_name = project_name
+    def __init__(self, directory, base_url, domain_name):
+        Crawler.directory = directory
         Crawler.base_url = base_url
         Crawler.domain_name = domain_name
 
-        Crawler.un_visit_file = Crawler.project_name+'/quere.txt'
-        Crawler.visit_file = Crawler.project_name = '/crawled.txt'
+        Crawler.un_visit_file = Crawler.directory+'/naovisitados.txt'
+        Crawler.visit_file = Crawler.directory +'/visitados.txt'
         self.start()
         self.crawl_page('Main Thread.', Crawler.base_url)
 
     @staticmethod
     def start():
-        create_project_dir(Crawler.project_name)
-        crate_data_files(Crawler.project_name, Crawler.base_url)
+        # Cria uma pasta para o dominio em questao.
+        create_dir(Crawler.directory)
+        # Cria os arquivos de visitados e nao visitados para este dominio
+        create_files(Crawler.directory, Crawler.base_url)
+        # Carrega as urls para memoria
         Crawler.un_visit = file_to_set(Crawler.un_visit_file)
         Crawler.visit = file_to_set(Crawler.visit_file)
 
     @staticmethod
     def crawl_page(thread_name, page_url):
+
         if page_url not in Crawler.visit:
             #print(thread_name + 'crawling' + page_url)
             #print('Links visitados' + str(len(Crawler.visit)))
             #print('Link nao visitados' + str(len(Crawler.un_visit)))
-            Crawler.update_visit(Crawler.get_links(page_url))
+
+            #obtem os links da pagina em questao
+            links  = Crawler.get_links(page_url)
+            # atualiza a lista de nao visitados com os links obtidos
+            Crawler.update_un_visit(links)
+            # remove o link visitado
             Crawler.un_visit.remove(page_url)
+            #adciona na lista de visitados os link visitado
             Crawler.visit.add(page_url)
+            #atualiza os arquivos de visitados e nao visitados
             Crawler.update_files()
 
     @staticmethod
     def get_links(page_url):
         try:
             response = urlopen(page_url)
-            if response.getheader('Content-Type') == 'text/html':
+            if 'text/html' in response.getheader('Content-Type'):
                 data = response.read().decode('latin-1')
+
             parser = Parser(Crawler.base_url, page_url)
             parser.feed(data)
         except:
-            print("Erro ao conectar a pagina")
+            print("Erro ao conectar a pagina " + page_url)
             return set()
         return parser.page_links()
             
 
     @staticmethod
-    def update_visit(links):
+    def update_un_visit(links):
         for link in links:
-            if link in Crawler.visit:
-                pass
-            if link in Crawler.un_visit:
-                pass
+            if link in Crawler.visit or link in Crawler.un_visit:
+                continue
             if Crawler.domain_name not in link:
-                pass
-            Crawler.visit.add(link)
+                continue
+            Crawler.un_visit.add(link)
 
     @staticmethod
     def update_files():
