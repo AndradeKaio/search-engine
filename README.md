@@ -31,7 +31,9 @@ $ pip install html.parser
 $ pip install matplotlib
 ```
 
-
+```
+$ pip install networkx
+```
 
 
 
@@ -42,18 +44,18 @@ End with an example of getting some data out of the system or using it for a lit
 Verifique se todas as dependências foram instaladas.
 
 ```
-$ python -V
-```
-```
-$ pip -V
-```
-```
 $ pip show matplotlib
+```
+```
+$ pip show networkx
+```
+```
+$ pip show html.parser
 ```
 ## Authors
 
 * **Kaio Henrique Andrade** - [Github Page](https://andradekaio.github.io)
-
+deandradekaio@gmail.com
 
 
 
