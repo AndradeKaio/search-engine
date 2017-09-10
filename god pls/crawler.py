@@ -11,13 +11,16 @@ class Crawler:
     un_visit_file = ''
     visit_file = ''
 
+    seed_file = set()
+
     un_visit = set()
     visit = set()
     
-    def __init__(self, directory, base_url, domain_name):
+    def __init__(self, directory, base_url, domain_name, seed_file):
         Crawler.directory = directory
         Crawler.base_url = base_url
         Crawler.domain_name = domain_name
+        Crawler.seed_file = seed_file
 
         Crawler.un_visit_file = Crawler.directory+'/naovisitados.txt'
         Crawler.visit_file = Crawler.directory +'/visitados.txt'
@@ -29,7 +32,8 @@ class Crawler:
         # Cria uma pasta para o dominio em questao.
         create_dir(Crawler.directory)
         # Cria os arquivos de visitados e nao visitados para este dominio
-        create_files(Crawler.directory, Crawler.base_url)
+        #create_files(Crawler.directory, Crawler.base_url)
+        create_corpus(Crawler.directory, Crawler.seed_file)
         # Carrega as urls para memoria
         Crawler.un_visit = file_to_set(Crawler.un_visit_file)
         Crawler.visit = file_to_set(Crawler.visit_file)
@@ -71,6 +75,8 @@ class Crawler:
         return parser.page_links()
             
 
+    # Metodo usado sempre que urls sao coletadas.
+    # Atualiza o conjunto de URLS ainda nao visitadas.
     @staticmethod
     def update_un_visit(links):
         for link in links:
@@ -80,12 +86,8 @@ class Crawler:
                 continue
             Crawler.un_visit.add(link)
 
+    # Atualiza os arquivos de visitados e nao visitados
     @staticmethod
     def update_files():
         set_to_file(Crawler.visit, Crawler.visit_file)
         set_to_file(Crawler.un_visit, Crawler.un_visit_file)
-        
-
-
-
-           

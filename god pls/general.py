@@ -2,6 +2,7 @@ import os
 
 
 
+
 def create_files(directory_name, base_url):
     un_visited = os.path.join(directory_name, 'naovisitados.txt')
     visit = os.path.join(directory_name, 'visitados.txt')
@@ -10,14 +11,18 @@ def create_files(directory_name, base_url):
     if not os.path.isfile(visit):
         write_file(visit, '')
 
+def create_corpus(directory_name, seeds):
+    un_visited = os.path.join(directory_name, 'naovisitados.txt')
+    visit = os.path.join(directory_name, 'visitados.txt')
+    if not os.path.isfile(un_visited):
+        with open(un_visited, "wt") as f:
+            for seed in seeds:
+                f.write(seed+"\n")
+            f.close()
+    if not os.path.isfile(visit):
+        write_file(visit, '')
 
-def create_data_files(project_name, base_url):
-    queue = os.path.join(project_name , 'queue.txt')
-    crawled = os.path.join(project_name,"crawled.txt")
-    if not os.path.isfile(queue):
-        write_file(queue, base_url)
-    if not os.path.isfile(crawled):
-        write_file(crawled, '')
+
 
 
 def create_dir(directory_name):
@@ -27,9 +32,10 @@ def create_dir(directory_name):
     except Exception as e:
         print("Erro ao criar arquivo")
 
-def add_file(path, data):
+def add_to_file(path, data):
     with open(path, 'a') as file:
         file.write(data+'\n')
+        file.close()
 
 def file_to_set(file):
     results = set()
@@ -42,9 +48,19 @@ def file_to_set(file):
 
 def set_to_file(links, file):
     # delete file
-    for link in sorted(links):
-        add_file(file, link)
+    with open(file, "wt") as f:
+        for link in sorted(links):
+            f.write(link + "\n")
 
 def write_file(path, file_data):
     with open(path, 'w') as f:
         f.write(file_data)
+        f.close()
+
+
+def read_seed(file_name):
+
+    with open(file_name, 'rt') as f:
+        data = f.read()
+        f.close()
+    return data
