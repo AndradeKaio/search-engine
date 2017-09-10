@@ -8,9 +8,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* [Python 3](https://www.python.org/downloads/) - Python 3.6.2
-* [Urllib3](https://urllib3.readthedocs.io/en/latest/) - The HTTP client for Python
+* [Python 3](https://www.python.org/downloads/) - Python 3.6.0
+* [Urllib](https://docs.python.org/3/library/urllib.html) - The HTTP client for Python
 * [html.parser](https://docs.python.org/3/library/html.parser.html) - HTML parser for Python
+* [Ubuntu 16.04](http://releases.ubuntu.com/16.04/) - Ubuntu LTS
 
 ### Installing
 
@@ -23,18 +24,33 @@ $ apt-get install python3-pip
 2. Instale as dependencias
 
 ```
-$ pip install urllib3
-```
-```
 $ pip install html.parser
 ```
+
+```
+$ pip install matplotlib
+```
+
+
+
 
 
 End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+Verifique se todas as dependências foram instaladas.
+
+```
+$ python -V
+```
+```
+$ pip -V
+```
+```
+$ pip show matplotlib
+```
+
 
 ### Break down into end to end tests
 
