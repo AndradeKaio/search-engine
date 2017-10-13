@@ -49,7 +49,7 @@ def file_to_set(file):
 def set_to_file(links, file):
     # delete file
     with open(file, "wt") as f:
-        for link in sorted(links):
+        for link in links:
             f.write(link + "\n")
 
 def write_file(path, file_data):

@@ -11,7 +11,7 @@ PROJECT_NAME = 'corpus'
 QUEUE_FILE = PROJECT_NAME +'/naovisitados.txt'
 CRAWLED_FILE = PROJECT_NAME+'/visitados.txt'
 
-MAX_THREADS = 4
+MAX_THREADS = 1
 
 thread_queue = Queue()
 seed = set()
@@ -26,7 +26,10 @@ def create_threads():
 def processing():
 	while True:
 		url = thread_queue.get()
+		#print(threading.current_thread().name + " crawling the " + url)
 		Crawler.crawl_page(threading.current_thread().name, url)
+		if thread_queue.qsize() == 0:
+			start_engine()
 		thread_queue.task_done()
 
 def start_engine():
@@ -47,9 +50,11 @@ else:
 		seed.add(link)
 
 
-	HOMEPAGE = "https://github.com/humans.txt"
 
-	Crawler(PROJECT_NAME, HOMEPAGE, seed)
+	START_PAGE = "http://www.google.com"
+
+
+	Crawler(PROJECT_NAME, seed)
 	create_threads()
 	start_engine()
 

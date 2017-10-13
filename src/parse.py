@@ -5,9 +5,9 @@ from urllib import parse
 
 class Parser(HTMLParser):
 
-    def __init__(self, base_url, page_url):
+    def __init__(self, page_url):
         super().__init__()
-        self.base_url = base_url
+
         self.page_url = page_url
         self.links = set()
 
@@ -15,13 +15,11 @@ class Parser(HTMLParser):
         if tag == "a":
             for name, value in attrs:
                 if name == "href":
-                    print(name)
-                    url = parse.urljoin(self.base_url, value)
+                    #print(name)
+                    url = parse.urljoin(self.page_url, value)
+                    #print(url)
                     self.links.add(url)
-        elif tag == "meta":
-            for name, value in attrs:
-                if name == "robots":
-                    print(value)
+
 
 
                     

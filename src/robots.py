@@ -7,13 +7,13 @@ ROBOTS = dict()
 def robot_check(url):
     """Check whether we're allowed to fetch this URL from this site"""
     
-    #netloc = urlparse(url).netloc
+    netloc = urlparse(url).netloc
     #print(get_domain(url))
-    netloc = get_domain(url)
-    print(netloc)
+    #netloc = get_domain(url)
+    #print(netloc)
     if netloc not in ROBOTS:
         robotsurl = urljoin(url, '/robots.txt')
-        print(robotsurl)
+        #print(robotsurl)
         ROBOTS[netloc] = RobotFileParser(robotsurl)
 
         ROBOTS[netloc].read()
@@ -44,4 +44,4 @@ def robot_check(url):
 
 
 		return result
-print(robot_check("https://desktop.github.com/"))'''
+print(robot_check("https://pucminas.br/"))'''
