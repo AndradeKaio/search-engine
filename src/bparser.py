@@ -25,15 +25,27 @@ class BeautifulParser:
         visible_text = filter(self.tag_visible, texts)
         return u" ".join(t.strip() for t in visible_text)
 
+    
+    def text_from_html(self, web_page):
+        soup = BeautifulSoup(web_page, 'html.parser')
+        texts = self.soup.find_all(text=True)
+        visible_text = filter(self.tag_visible, texts)
+        return u" ".join(t.strip() for t in visible_text)
 
     def normalize(self, text):
         text = unicodedata.normalize('NFD', text).lower().encode('ASCII', 'ignore')
         return re.sub('[^a-zA-Z0-9 \\\]', '', text)
 
+    def remove_trash(self, text):
+        text = re.sub(r'\n+', ' ', text)
+        text = re.sub(' +', ' ', text)
+        return text
 
     def get_links(self):
         for link in self.soup.find_all('a', href=True):
             self.links.add(link['href'])
+
 '''
-parser = BeautifulParser("<html> teste <a href=\"https://www.w3schools.com\">Visit W3Schools</a>  </html>")
-print(parser.text_from_html())'''
+parser = BeautifulParser("<html> \n \n \n \nteste <a href=\"https://www.w3schools.com\">Visit W3Schools</a>  </html>")
+print(parser.text_from_html())
+'''
