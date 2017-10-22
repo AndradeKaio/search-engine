@@ -16,47 +16,6 @@ These instructions will get you a copy of the project up and running on your loc
 * [bf4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) - Beautiful Soup
 
 
-
-
-### Installing
-
-1. Instale o gerenciador de pacotes pip
-
-```
-$ apt-get install python3-pip
-```
-
-2. Instale as dependencias
-
-```
-$ pip install html.parser
-```
-
-```
-$ pip install matplotlib
-```
-
-```
-$ pip install networkx
-```
-
-
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Verifique se todas as dependências foram instaladas.
-
-```
-$ pip show matplotlib
-```
-```
-$ pip show networkx
-```
-```
-$ pip show html.parser
-```
 ## Authors
 
 * **Kaio Henrique Andrade** - [Github Page](https://andradekaio.github.io)
