@@ -23,15 +23,22 @@ class BeautifulParser:
     def text_from_html(self):
         texts = self.soup.find_all(text=True)
         visible_text = filter(self.tag_visible, texts)
-        return u" ".join(t.strip() for t in visible_text)
+        texts =  u" ".join(t.strip() for t in visible_text)
+        texts = unicodedata.normalize('NFKD', texts).lower()
+        #texts = re.sub('[^a-zA-Z0-9 \\\]', '', texts)
+        texts = re.sub('[^a-zA-Z \\\]', '', texts)
+        texts = re.sub(r'\n+', ' ', texts)
+        #texts = re.sub(r'\s+', ' ', texts)
+        texts = re.sub(' +', ' ', texts)
+        return texts
 
-    
+    '''
     def text_from_html(self, web_page):
         soup = BeautifulSoup(web_page, 'html.parser')
         texts = self.soup.find_all(text=True)
         visible_text = filter(self.tag_visible, texts)
         return u" ".join(t.strip() for t in visible_text)
-
+    '''
     def normalize(self, text):
         text = unicodedata.normalize('NFD', text).lower().encode('ASCII', 'ignore')
         return re.sub('[^a-zA-Z0-9 \\\]', '', text)
@@ -46,6 +53,6 @@ class BeautifulParser:
             self.links.add(link['href'])
 
 '''
-parser = BeautifulParser("<html> \n \n \n \nteste <a href=\"https://www.w3schools.com\">Visit W3Schools</a>  </html>")
+parser = BeautifulParser("<html> \n \n \n \n           </html>")
 print(parser.text_from_html())
 '''

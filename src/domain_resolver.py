@@ -1,6 +1,5 @@
 from urllib.parse import urlparse
 
-
 def get_domain(url):
     try:
         domain = get_sub_domain(url).split('.')
@@ -8,9 +7,6 @@ def get_domain(url):
     except:
         print("erro ao obter dominio da url.")
         return ''
-
-
-
 
 def get_sub_domain(url):
     try:

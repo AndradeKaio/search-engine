@@ -37,5 +37,6 @@ def elias_gamma(x):
 def elias_delta(x):
     return elias_generic(elias_gamma,x)
      
-for i in range(11): 
+for i in range(11):
+    print(type(elias_delta(i)))
     print ("%5d: %-10s : %-10s : %-10s" %(i, elias_gamma(i),elias_delta(i), golomb(3,i)))

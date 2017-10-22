@@ -1,8 +1,10 @@
 from urllib.request import urlopen
 from time import ctime
 from bparser import *
+from parser import *
 from general import *
 from robots import *
+from disk_dct import *
 from bs4 import BeautifulSoup
 
 
@@ -17,6 +19,8 @@ class Crawler:
     discovered_urls = 0
     crawled_urls = 0
 
+    crawled_pages = 0
+
     store = 500
 
     seed_file = list()
@@ -30,11 +34,15 @@ class Crawler:
         Crawler.un_visit_file = Crawler.directory+'/naovisitados.txt'
         Crawler.visit_file = Crawler.directory +'/visitados.txt'
 
+        # Inicia indexador.
+        Indexer()
+
+        Crawler.un_visit.add(Crawler.base_url)
         for seed in seed_file:
             Crawler.un_visit.add(seed)
-
         self.start()
         self.crawl_page('Main Thread.', Crawler.base_url)
+        
 
     @staticmethod
     def start():
@@ -44,7 +52,7 @@ class Crawler:
         #create_files(Crawler.directory, Crawler.base_url)
         create_corpus(Crawler.directory, Crawler.seed_file)
         # Carrega as urls para memoria
-        Crawler.un_visit = file_to_set(Crawler.un_visit_file)
+        #Crawler.un_visit = file_to_set(Crawler.un_visit_file)
         Crawler.visit = file_to_set(Crawler.visit_file)
 
     @staticmethod
@@ -57,15 +65,15 @@ class Crawler:
 
                 #obtem os links da pagina em questao
                 links  = Crawler.get_links(page_url)
-                Crawler.crawled_urls +=1
-                Crawler.discovered_urls+=len(links)
+                #Crawler.crawled_urls +=1
+                #Crawler.discovered_urls+=len(links)
                 #print(ctime(), " ", Crawler.discovered_urls)
                 # atualiza a lista de nao visitados com os links obtidos
                 Crawler.update_un_visit(links)
                 # remove o link visitado
                 #adciona na lista de visitados os link visitado
                 Crawler.visit.add(page_url)
-
+            
             Crawler.un_visit.remove(page_url)
             #atualiza os arquivos de visitados e nao visitados
             Crawler.update_files()
@@ -79,15 +87,36 @@ class Crawler:
             #descarta qualquer arquivo diferente de html
             if 'text/html' in response.getheader('Content-Type'):
                 data = response.read().decode('latin-1')
-            #invoca o parser 
-                
-            parser = BeautifulParser(data)
-            parser.get_links()
+            Crawler.crawled_pages+=1
+            print(Crawler.crawled_pages)
 
             #parser = Parser(page_url)
             #parser.feed(data)
+
+            #invoca o parser   
+            parser = BeautifulParser(data)
+            # Extrai links encontrados nela
+            parser.get_links()
+
+
+            # Extrai texto da pagina
+            text = parser.text_from_html()
+            #print(len(text))]
+            print("OI")
+            with open(Crawler.crawled_pages+'.txt', 'wt') as f:
+                f.write(text)
+                f.close()
+            '''
+            for index, word in enumerate(text.split(' ')):
+                if len(word) > 1:
+                    Indexer.word_update(word, index)'''
+            #Indexer.update_index()
+            # Alimenta Indexador
+            #print(text)
+            #Indexer.update_index(text)
+
         except:
-            print("Erro ao conectar a pagina " + page_url)
+            print("Crawler: Erro ao conectar a pagina " + page_url)
             return set()
         return parser.links
             
@@ -109,10 +138,3 @@ class Crawler:
     def update_files():
         set_to_file(Crawler.visit, Crawler.visit_file)
         set_to_file(Crawler.un_visit, Crawler.un_visit_file)
-
-'''
-p = BeautifulParser()
-response = urlopen("http://www.google.com")
-p.get_links(response)
-print(p.links)
-'''
