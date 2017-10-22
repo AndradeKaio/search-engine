@@ -10,8 +10,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 * [Python 3](https://www.python.org/downloads/) - Python 3.6.0
 * [Urllib](https://docs.python.org/3/library/urllib.html) - The HTTP client for Python
-* [html.parser](https://docs.python.org/3/library/html.parser.html) - HTML parser for Python
 * [Ubuntu 16.04](http://releases.ubuntu.com/16.04/) - Ubuntu LTS
+* [Shelve](https://docs.python.org/3/library/shelve.html) - Python object persistence
+* [NLTK](http://www.nltk.org/) - Natural Language Toolkit
+* [bf4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) - Beautiful Soup
+
+
+
 
 ### Installing
 
